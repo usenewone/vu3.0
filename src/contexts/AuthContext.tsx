@@ -114,6 +114,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           return { error };
         }
 
+        // Immediately update session and user states
+        if (data.session) {
+          setSession(data.session);
+          setUser(data.session.user);
+          await loadUserRole(data.session.user.id);
+        }
+
         return { error: null };
       } else {
         // For username-based login, validate against custom users table first
@@ -169,8 +176,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           authData = retryData;
         }
 
-        // Remove the premature setUserRole call - let onAuthStateChange handle it
-        // setUserRole(userData.role); // This line has been removed
+        // Immediately update session and user states
+        if (authData.session) {
+          setSession(authData.session);
+          setUser(authData.session.user);
+          await loadUserRole(authData.session.user.id);
+        }
 
         return { error: null };
       }
