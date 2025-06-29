@@ -169,8 +169,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           authData = retryData;
         }
 
-        // Set the user role from the custom users table
-        setUserRole(userData.role);
+        // Remove the premature setUserRole call - let onAuthStateChange handle it
+        // setUserRole(userData.role); // This line has been removed
 
         return { error: null };
       }
